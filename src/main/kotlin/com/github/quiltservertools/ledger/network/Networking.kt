@@ -6,6 +6,7 @@ import com.github.quiltservertools.ledger.network.packet.LedgerPacketTypes
 import com.github.quiltservertools.ledger.network.packet.Receiver
 import com.github.quiltservertools.ledger.network.packet.receiver.HandshakePacketReceiver
 import com.github.quiltservertools.ledger.network.packet.receiver.InspectReceiver
+import com.github.quiltservertools.ledger.network.packet.receiver.PlayerReceiver
 import com.github.quiltservertools.ledger.network.packet.receiver.PurgeReceiver
 import com.github.quiltservertools.ledger.network.packet.receiver.RollbackReceiver
 import com.github.quiltservertools.ledger.network.packet.receiver.SearchReceiver
@@ -21,6 +22,7 @@ object Networking {
     // List of players who have a compatible client mod
     private var networkedPlayers = mutableSetOf<ServerPlayerEntity>()
     const val protocolVersion = 2
+    const val PERMISSION_NODE = "ledger.networking"
 
     init {
         if (config[NetworkingSpec.networking]) {
@@ -29,6 +31,7 @@ object Networking {
             register(LedgerPacketTypes.HANDSHAKE.id, HandshakePacketReceiver())
             register(LedgerPacketTypes.ROLLBACK.id, RollbackReceiver())
             register(LedgerPacketTypes.PURGE.id, PurgeReceiver())
+            register(LedgerPacketTypes.PLAYER.id, PlayerReceiver())
         }
     }
 

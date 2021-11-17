@@ -15,9 +15,12 @@ import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.server.command.ServerCommandSource
 
 object PlayerCommand : BuildableCommand {
+
+    const val PERMISSION_NODE = "ledger.commands.player"
+
     override fun build(): LiteralNode {
         return literal("player")
-            .requires(Permissions.require("ledger.commands.player", CommandConsts.PERMISSION_LEVEL))
+            .requires(Permissions.require(PERMISSION_NODE, CommandConsts.PERMISSION_LEVEL))
             .then(argument("player", GameProfileArgumentType.gameProfile())
                 .executes {
                     return@executes lookupPlayer(GameProfileArgumentType.getProfileArgument(it, "player"), it.source)

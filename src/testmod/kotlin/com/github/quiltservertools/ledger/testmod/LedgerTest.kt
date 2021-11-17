@@ -19,6 +19,7 @@ object LedgerTest : ClientModInitializer {
     val INSPECT = Identifier("ledger", "inspect")
     val SEARCH = Identifier("ledger", "search")
     val ACTION = Identifier("ledger", "action")
+    val PLAYER = Identifier("ledger", "player")
     val LOGGER: Logger = LogManager.getLogger("LedgerTestmod")
 
     override fun onInitializeClient() {
@@ -59,8 +60,23 @@ object LedgerTest : ClientModInitializer {
                 pos, id, world, oldObjectId, objectId, source, timestamp, extraData)
         }
 
+        ClientPlayNetworking.registerGlobalReceiver(PLAYER) { client, handler, buf, sender ->
+            LOGGER.info("Player name: ${buf.readUuid()}")
+            buf.readString()
+            buf.readLong()
+            buf.readLong()
+            LOGGER.info("Player last known pos: ${buf.readBlockPos()} in ${buf.readIdentifier()}")
+        }
+
         PlayerBlockBreakEvents.AFTER.register { world, player, pos, state, blockEntity ->
             inspectBlock(pos)
+        }
+
+        ClientPlayConnectionEvents.JOIN.register { handler, sender, player ->
+            val buf = PacketByteBufs.create()
+            buf.writeInt(1)
+            buf.writeString(player.name)
+            ClientPlayNetworking.send(PLAYER, buf)
         }
 
         registerCommands(ClientCommandManager.DISPATCHER)

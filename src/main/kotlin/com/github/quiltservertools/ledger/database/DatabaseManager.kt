@@ -300,9 +300,9 @@ object DatabaseManager {
             insertActionType(id)
         }
 
-    suspend fun logPlayer(uuid: UUID, name: String) =
+    suspend fun logPlayer(uuid: UUID, name: String, pos: BlockPos) =
         execute {
-            insertPlayer(uuid, name)
+            insertPlayer(uuid, name, pos)
         }
 
     suspend fun insertIdentifiers(identifiers: Collection<Identifier>) =
@@ -366,7 +366,7 @@ object DatabaseManager {
         }
     }
 
-    private fun Transaction.insertPlayer(uuid: UUID, name: String) {
+    private fun Transaction.insertPlayer(uuid: UUID, name: String, pos: BlockPos) {
         val player = Tables.Player.find { Tables.Players.playerId eq uuid }.firstOrNull()
 
         if (player != null) {
@@ -376,6 +376,9 @@ object DatabaseManager {
             Tables.Player.new {
                 this.playerId = uuid
                 this.playerName = name
+                this.lastLeaveX = pos.x
+                this.lastLeaveY = pos.y
+                this.lastLeaveZ = pos.z
             }
         }
     }

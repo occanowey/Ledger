@@ -19,6 +19,10 @@ object Tables {
         val playerName = varchar("player_name", MAX_PLAYER_NAME_LENGTH)
         val firstJoin = timestamp("first_join").clientDefault { Instant.now() }
         val lastJoin = timestamp("last_join").clientDefault { Instant.now() }
+        val lastLeaveX = integer("x")
+        val lastLeaveY = integer("y")
+        val lastLeaveZ = integer("z")
+        val lastLeaveWorld = varchar("world", MAX_IDENTIFIER_LENGTH)
     }
 
     class Player(id: EntityID<Int>) : IntEntity(id) {
@@ -26,6 +30,10 @@ object Tables {
         var playerName by Players.playerName
         var firstJoin by Players.firstJoin
         var lastJoin by Players.lastJoin
+        var lastLeaveX by Players.lastLeaveX
+        var lastLeaveY by Players.lastLeaveY
+        var lastLeaveZ by Players.lastLeaveZ
+        var lastLeaveWorld by Players.lastLeaveWorld
 
         companion object : IntEntityClass<Player>(Players)
     }

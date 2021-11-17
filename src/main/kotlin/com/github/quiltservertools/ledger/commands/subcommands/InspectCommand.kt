@@ -15,9 +15,12 @@ import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.util.math.BlockPos
 
 object InspectCommand : BuildableCommand {
+
+    const val PERMISSION_NODE = "ledger.commands.inspect"
+
     override fun build(): LiteralNode =
         literal("inspect")
-            .requires(Permissions.require("ledger.commands.inspect", CommandConsts.PERMISSION_LEVEL))
+            .requires(Permissions.require(PERMISSION_NODE, CommandConsts.PERMISSION_LEVEL))
             .executes { toggleInspect(it) }
             .then(
                 literal("on")

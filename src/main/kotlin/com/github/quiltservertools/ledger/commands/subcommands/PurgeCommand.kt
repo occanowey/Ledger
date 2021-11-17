@@ -17,9 +17,12 @@ import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.text.TranslatableText
 
 object PurgeCommand : BuildableCommand {
+
+    const val PERMISSION_NODE = "ledger.commands.purge"
+
     override fun build(): LiteralNode {
         return literal("purge")
-            .requires(Permissions.require("ledger.commands.purge", config[SearchSpec.purgePermissionLevel]))
+            .requires(Permissions.require(PERMISSION_NODE, config[SearchSpec.purgePermissionLevel]))
             .then(SearchParamArgument.argument(CommandConsts.PARAMS).executes {
                 runPurge(it, SearchParamArgument.get(it, CommandConsts.PARAMS))
             })

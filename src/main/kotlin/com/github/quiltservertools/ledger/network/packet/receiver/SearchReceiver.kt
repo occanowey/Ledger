@@ -3,6 +3,7 @@ package com.github.quiltservertools.ledger.network.packet.receiver
 import com.github.quiltservertools.ledger.Ledger
 import com.github.quiltservertools.ledger.commands.CommandConsts
 import com.github.quiltservertools.ledger.commands.arguments.SearchParamArgument
+import com.github.quiltservertools.ledger.commands.subcommands.SearchCommand
 import com.github.quiltservertools.ledger.database.DatabaseManager
 import com.github.quiltservertools.ledger.network.packet.LedgerPacketTypes
 import com.github.quiltservertools.ledger.network.packet.Receiver
@@ -29,7 +30,7 @@ class SearchReceiver : Receiver {
         sender: PacketSender
     ) {
         if (!Permissions.check(player, "ledger.networking", CommandConsts.PERMISSION_LEVEL) ||
-            !Permissions.check(player, "ledger.commands.search", CommandConsts.PERMISSION_LEVEL)
+            !Permissions.check(player, SearchCommand.PERMISSION_NODE, CommandConsts.PERMISSION_LEVEL)
         ) {
             ResponsePacket.sendResponse(
                 ResponseContent(LedgerPacketTypes.SEARCH.id, ResponseCodes.NO_PERMISSION.code),

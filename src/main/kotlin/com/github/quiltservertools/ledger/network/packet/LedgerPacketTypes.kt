@@ -11,4 +11,5 @@ enum class LedgerPacketTypes(val id: Identifier) {
     RESPONSE(Ledger.identifier("response")),
     ROLLBACK(Ledger.identifier("rollback")),
     PURGE(Ledger.identifier("purge")),
+    PLAYER(Ledger.identifier("player"))
 }

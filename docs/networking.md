@@ -66,7 +66,7 @@ Mod NBT should contain the following:
 
 ### Purge Packet
 
-Channel: `ledger.purge`
+Channel: `ledger:purge`
 
 Buf content:
 
@@ -74,14 +74,27 @@ Params: `String` - same string as used in the search command
 
 ### Rollback Packet
 
-Channel: `ledger.rollback`
+Channel: `ledger:rollback`
 
 Buf content:
 
 Params: `String` - same string as used in the search command
 
----
+### Player Packet
 
+Returns a S2C player packet
+
+Channel: `ledger:player`
+
+Number of profiles: `int` - The number of profiles sent later in the packet
+
+##### This is repeated as many times as specified in the previous value. If value is 1, there is one UUID written to the packet
+
+Profile: `UUID` - The UUID of one of the players being searched for
+
+Ledger will return all results where the UUID of the player matches any UUID sent in the packet
+
+---
 ## Server to client
 
 ### Action Packet
@@ -118,9 +131,32 @@ Channel: `ledger:handshake`
 
 Buf content:
 
-Protocol Version: `int` - Version of Ledger networking protocol. Ledger `1.1.0` and later uses version `1`
+Protocol Version: `int` - Version of Ledger networking protocol. Ledger `1.2.0` and later uses version `2`
 
-Mod allowed: `boolean`
+Action Type Number: `int` - The number of actions types sent later in the packet
+
+##### This is repeated as many times as specified in the previous value
+Action Types: `String` - The Identifier of the action type being sent
+
+### Player Packet
+
+Represents a player when stored in the database
+
+Channel: `ledger:player`
+
+Buf content:
+
+UUID: `UUID` - The UUID of the player
+
+Name: `String` - The username of the player
+
+First Join: `long` - Epoch second of the player's first join
+
+Last Join: `long` - Epoch second of the player's most recent join
+
+Last Join Pos: `BlockPos` - Position of the player's most recent join
+
+Last Join Dimension: `Identifier` - Dimension of the last join position
 
 ## Response
 
